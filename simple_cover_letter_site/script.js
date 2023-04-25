@@ -1,20 +1,46 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('pdf-merger-form');
-    const outputText = document.getElementById('output-text');
+import {
+	ChatPromptTemplate,
+	HumanMessagePromptTemplate,
+	SystemMessagePromptTemplate,
+} from "langchain/prompts";
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+openai_api_key = "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";
 
-        // Get the PDF and text input values
-        const pdf1 = document.getElementById('pdf1').files[0];
-        const pdf2 = document.getElementById('pdf2').files[0];
-        const text1 = document.getElementById('text1').value;
-        const text2 = document.getElementById('text2').value;
+document.addEventListener("DOMContentLoaded", () => {
+	const form = document.getElementById("pdf-merger-form");
+	const outputText = document.getElementById("output-text");
 
-        // In this simple example, we just concatenate the input values
-        const mergedText = `PDF 1: ${pdf1.name}, PDF 2: ${pdf2.name}, Text 1: ${text1}, Text 2: ${text2}`;
+	form.addEventListener("submit", async (event) => {
+		event.preventDefault();
 
-        // Set the output div text
-        outputText.textContent = mergedText;
-    });
+		// Get the PDF and text input values
+		const coverLetter = document.getElementById("pdf1").files[0];
+		const resume = document.getElementById("pdf2").files[0];
+		const jobDescription = document.getElementById("text1").value;
+		const additionalNotes = document.getElementById("text2").value;
+
+		const prompt = ChatPromptTemplate.fromPromptMessages([
+			SystemMessagePromptTemplate.fromTemplate(
+				"Here is a past cover letter I have written: '{coverLetter}' \n\
+            Here is my resume: '{resume}' \n\
+            Please write a cover letter based on my resume and the following job description: '{jobDescription}' \n\
+            Please imitate the style of my past cover letter. '{additionalNotes}'"
+			),
+			HumanMessagePromptTemplate.fromTemplate("{text}"),
+		]);
+
+		const chain = new LLMChain({
+			prompt: prompt,
+			llm: chat,
+		});
+
+		const response = await chain.call({
+			input_language: "English",
+			output_language: "French",
+			text: "I love programming.",
+		});
+
+		// Set the output div text
+		outputText.textContent = response;
+	});
 });
