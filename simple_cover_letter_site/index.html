@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LetterGen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>LetterGen</h1>
+        <form id="pdf-merger-form">
+            <input type="file" id="pdf1" accept="application/pdf">
+            <input type="file" id="pdf2" accept="application/pdf">
+            <input type="text" id="text1" placeholder="Text 1">
+            <input type="text" id="text2" placeholder="Text 2">
+            <button type="submit">Create Cover Letter</button>
+        </form>
+        <div id="output">
+            <h3>Output:</h3>
+            <p id="output-text"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
